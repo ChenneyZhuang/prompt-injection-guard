@@ -9,7 +9,7 @@ import asyncio
 import logging
 
 from guard.config import get_api_base, get_api_key
-from guard.models.schemas import RiskLevel, ScanResult
+from guard.models.schemas import PatternMatch, RiskLevel, ScanResult
 from guard.tools.patterns import compute_score, scan_patterns, score_to_level
 
 logger = logging.getLogger(__name__)
@@ -75,7 +75,7 @@ def _regex_scan(text: str) -> ScanResult:
     )
 
 
-def _generate_safe_alternative(text: str, matches: list) -> str | None:
+def _generate_safe_alternative(text: str, matches: list[PatternMatch]) -> str | None:
     """Suggest a safe rephrasing by stripping detected patterns."""
     # Simple heuristic: if the user is asking something legitimate but
     # embedded in injection language, suggest stripping the injection bits.
@@ -94,6 +94,18 @@ def _generate_safe_alternative(text: str, matches: list) -> str | None:
     if cleaned and cleaned != text:
         return cleaned
     return "Please rephrase your request without attempting to override system instructions."
+
+
+def _run_async(coro):
+    """Safely run a coroutine, handling already-running event loops."""
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
+    # Already inside an async context — create a new loop in a thread
+    import concurrent.futures
+    with concurrent.futures.ThreadPoolExecutor() as pool:
+        return pool.submit(asyncio.run, coro).result()
 
 
 def scan(text: str) -> ScanResult:
@@ -120,7 +132,7 @@ def scan(text: str) -> ScanResult:
     if api_key:
         logger.info("Using LLM-based detection (DeepSeek API)")
         try:
-            return asyncio.run(_llm_scan(text))
+            return _run_async(_llm_scan(text))
         except Exception:
             logger.warning("LLM scan failed, falling back to regex", exc_info=True)
 
