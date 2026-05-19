@@ -104,6 +104,7 @@ def _run_async(coro):
         return asyncio.run(coro)
     # Already inside an async context — create a new loop in a thread
     import concurrent.futures
+
     with concurrent.futures.ThreadPoolExecutor() as pool:
         return pool.submit(asyncio.run, coro).result()
 

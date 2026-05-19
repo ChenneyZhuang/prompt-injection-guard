@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 import argparse
-import json
 import logging
 import sys
 
-from guard.pipeline import scan
 from guard.models.schemas import RiskLevel
+from guard.pipeline import scan
 
 logger = logging.getLogger(__name__)
 
@@ -37,12 +36,14 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Text to scan for injection (reads from stdin if omitted)",
     )
     p.add_argument(
-        "-j", "--json",
+        "-j",
+        "--json",
         action="store_true",
         help="Output result as JSON instead of rich-formatted text",
     )
     p.add_argument(
-        "-v", "--verbose",
+        "-v",
+        "--verbose",
         action="store_true",
         help="Enable debug logging",
     )
@@ -70,8 +71,7 @@ def _format_rich(result) -> str:
     lines: list[str] = []
 
     panel = Panel(
-        f"[bold {color}]Risk: {result.risk_level.upper()}[/bold {color}]  "
-        f"(score: {result.score:.2f})",
+        f"[bold {color}]Risk: {result.risk_level.upper()}[/bold {color}]  (score: {result.score:.2f})",
         title="Prompt Injection Guard",
         border_style=color,
     )
@@ -85,10 +85,10 @@ def _format_rich(result) -> str:
         lines.append(f"\n[bold]Matched {len(result.patterns_matched)} pattern(s):[/bold]")
         for m in result.patterns_matched:
             lines.append(f"  • {m.name}: {m.description}")
-            lines.append(f"    Text: [italic]\"{m.matched_text[:80]}\"[/italic]")
+            lines.append(f'    Text: [italic]"{m.matched_text[:80]}"[/italic]')
 
     if result.safe_alternative:
-        lines.append(f"\n[bold green]Suggested safe alternative:[/bold green]")
+        lines.append("\n[bold green]Suggested safe alternative:[/bold green]")
         lines.append(f"  {result.safe_alternative}")
 
     lines.append(f"\n[dim]Detection method: {result.method}[/dim]")
@@ -101,7 +101,7 @@ def _format_plain(result) -> str:
         f"Risk Level: {result.risk_level.upper()}",
         f"Score:      {result.score:.2f}",
         f"Method:     {result.method}",
-        f"",
+        "",
         f"Reasoning: {result.reasoning}",
     ]
     if result.patterns_matched:

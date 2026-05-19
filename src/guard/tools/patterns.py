@@ -57,7 +57,6 @@ RULES: list[_Rule] = [
         "Instructs the model to bypass safety filters",
         0.35,
     ),
-
     # === Role manipulation ===
     _Rule(
         "role_switch",
@@ -77,7 +76,6 @@ RULES: list[_Rule] = [
         "Uses urgency to demand security override",
         0.28,
     ),
-
     # === Payload / code injection ===
     _Rule(
         "code_injection",
@@ -91,7 +89,6 @@ RULES: list[_Rule] = [
         "Classic SQL injection patterns",
         0.15,
     ),
-
     # === Prompt leaking ===
     _Rule(
         "prompt_leak",
@@ -105,7 +102,6 @@ RULES: list[_Rule] = [
         "Attempts to extract secrets or credentials",
         0.20,
     ),
-
     # === Translation / encoding attacks ===
     _Rule(
         "translation_attack",
@@ -119,7 +115,6 @@ RULES: list[_Rule] = [
         "Long base64-encoded string (potential hidden payload)",
         0.18,
     ),
-
     # === Boundary / completion attacks ===
     _Rule(
         "completion_hijack",
@@ -133,7 +128,6 @@ RULES: list[_Rule] = [
         "Injects fake conversation turns using delimiter tokens",
         0.26,
     ),
-
     # === Multi-turn / context poisoning ===
     _Rule(
         "context_poisoning",
@@ -141,7 +135,6 @@ RULES: list[_Rule] = [
         "Attempts to make the model accept false premises",
         0.20,
     ),
-
     # === DoS / resource exhaustion ===
     _Rule(
         "repetition_attack",
@@ -149,7 +142,6 @@ RULES: list[_Rule] = [
         "Highly repetitive text (potential DoS or pattern-attack)",
         0.12,
     ),
-
     # === Token smuggling ===
     _Rule(
         "special_token_abuse",
@@ -213,7 +205,7 @@ def compute_score(matches: list[PatternMatch]) -> float:
     # Compound formula: 1 - ∏(1 - w_i)  →  asymptotically approaches 1.0
     product = 1.0
     for w in weights:
-        product *= (1.0 - w)
+        product *= 1.0 - w
     score = 1.0 - product
 
     return round(min(score, 1.0), 4)

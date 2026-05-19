@@ -1,9 +1,7 @@
 """Tests for regex pattern matching."""
 
-import pytest
-
-from guard.tools.patterns import compute_score, scan_patterns, score_to_level
 from guard.models.schemas import RiskLevel
+from guard.tools.patterns import compute_score, scan_patterns, score_to_level
 
 
 class TestPatterns:
