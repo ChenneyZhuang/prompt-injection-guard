@@ -1,11 +1,11 @@
 """Pydantic models for scan results and risk levels."""
 
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     """Risk level assigned to a scan result."""
 
     SAFE = "safe"

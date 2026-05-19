@@ -60,7 +60,6 @@ def _format_rich(result) -> str:
     try:
         from rich.console import Console
         from rich.panel import Panel
-        from rich.table import Table
     except ImportError:
         return _format_plain(result)
 

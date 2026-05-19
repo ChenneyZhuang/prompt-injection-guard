@@ -99,7 +99,7 @@ def _generate_safe_alternative(text: str, matches: list[PatternMatch]) -> str | 
 def _run_async(coro):
     """Safely run a coroutine, handling already-running event loops."""
     try:
-        loop = asyncio.get_running_loop()
+        asyncio.get_running_loop()
     except RuntimeError:
         return asyncio.run(coro)
     # Already inside an async context — create a new loop in a thread
