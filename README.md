@@ -3,6 +3,7 @@
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-21%2F21-brightgreen)]()
+[![CI](https://github.com/ChenneyZhuang/prompt-injection-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/ChenneyZhuang/prompt-injection-guard/actions/workflows/ci.yml)
 
 **An AI agent for detecting prompt injection attacks in user input.**
 
