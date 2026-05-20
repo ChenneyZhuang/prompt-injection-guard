@@ -8,7 +8,7 @@ Usage:
     print(result.score)       # 0.05
 """
 
-from guard.pipeline import scan
+from guard.pipeline import scan, scan_async
 
 __version__ = "0.1.0"
-__all__ = ["scan"]
+__all__ = ["scan", "scan_async"]
